@@ -50,11 +50,34 @@ project
 endof project
 ```
 
-When creating your project you must include a "tm.json" you must add your transformer class' to this here is an example:
+When creating your project you must include a "tm.json" in the base of the jar you compile.
+You must add your transformer class' for reasons that are self-explanatory. Here is an example:
 
-````{
-"transformerMap": [
-  "org.example.Main"
+````json
+{
+  "transformerMap": [
+    "org.example.Main"
   ]
 }
-```
+````
+
+When creating a transforming class you need to set 2 annotations: ```@SetClass(clazz = "exampleClass") & @PatchVoid(
+method = "", at = OverrideType.BOTTOM, descriptor = "")```
+
+Here is an example:
+
+````java
+
+@SetClass(clazz = "aya")
+public class TransformerExample {
+
+    //To refrence a field in that class, just create a type with the same name and ref
+    private String r;
+
+    @PatchVoid(method = "e", at = OverrideType.BOTTOM, descriptor = "()V")
+    public void ea() {
+        System.out.println("splash Text is " + r);
+    }
+}
+````
+
