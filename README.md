@@ -28,6 +28,33 @@ is: ``-javaagent:\Users\si1kn\IdeaProjects\RuntimeInjectorClient\build\libs\Runt
 
 *NOTE*: YOURS WILL BE DIFFRENT SO PLEASE MAKE SURE YOU GOT THIS CORRECT!
 
+## For your main project
 
+I wrote mine in java like this:
 
+```
+project
+│
+└───src
+│   │
+│   └───main
+|         └───src
+|         |   └───org.example
+|         |   |    └───Main
+|         |   |    └───NewCode
+|         |   |    |
+|         |   |    |
+|         └───resources
+|             └───tm.json
+│   
+endof project
+```
 
+When creating your project you must include a "tm.json" you must add your transformer class' to this here is an example:
+
+````{
+"transformerMap": [
+  "org.example.Main"
+  ]
+}
+```

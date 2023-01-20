@@ -9,12 +9,15 @@ import org.objectweb.asm.AnnotationVisitor
  */
 class TCNClassAnnotationVisitor(api: Int, av: AnnotationVisitor, private val clazzAnnotations: ArrayList<Annotation>, private val type: String) :
     AnnotationVisitor(api, av) {
-    
+    private val map = HashMap<String, String>()
     
     override fun visit(name: String?, value: Any?) {
-        val tempMap = HashMap<String, String>()
-        tempMap[name.toString()] = value.toString()
-        clazzAnnotations.add(Annotation(tempMap, type))
+        map[name.toString()] = value.toString()
         super.visit(name, value)
+    }
+    
+    override fun visitEnd() {
+        clazzAnnotations.add(Annotation(map, type))
+        super.visitEnd()
     }
 }

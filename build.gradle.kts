@@ -16,10 +16,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("commons-io:commons-io:2.11.0")
     implementation("org.ow2.asm:asm:9.4")
-
-
-
-
 }
 
 tasks.test {
