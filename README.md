@@ -13,3 +13,21 @@ Welcome! Here is my implementation of a runtime client which edits bytecode auto
   example;" -> "String example;"
 - Doesn't patch correctly
 - Not very well documented
+
+### How to set up
+
+First set up the project by cloning and opening this in your ide of choice.
+
+Next in the AgentMain.kt file, you must change the location of the File to your main project's jar.
+So far I have not found a way to get around this yet.
+
+To set up, you must add the **"-javaagent"** with your jar location to your java arguments.
+
+For example my one
+is: ``-javaagent:\Users\si1kn\IdeaProjects\RuntimeInjectorClient\build\libs\RuntimeInjectorClient-1.0-SNAPSHOT.jar``
+
+*NOTE*: YOURS WILL BE DIFFRENT SO PLEASE MAKE SURE YOU GOT THIS CORRECT!
+
+
+
+
