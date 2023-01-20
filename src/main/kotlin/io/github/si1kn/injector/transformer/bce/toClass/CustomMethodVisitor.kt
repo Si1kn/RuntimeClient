@@ -1,11 +1,11 @@
-package io.github.si1kn.injector.transformer.bce
+package io.github.si1kn.injector.transformer.bce.toClass
 
 
 import io.github.si1kn.injector.util.*
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
-class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, val insnList: ArrayList<AbstractInsn>, val toRemove: ArrayList<String>?, val className: String) :
+class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, private val insnList: ArrayList<AbstractInsn>, private val toRemove: ArrayList<String>?, private val className: String, ) :
     MethodVisitor(api, methodVisitor) {
     
     
@@ -19,10 +19,10 @@ class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, val insnList: 
                     is VarInsn -> super.visitVarInsn(ai.opcode, ai.varIndex)
                     is TypeInsn -> super.visitTypeInsn(ai.opcode, ai.type)
                     is FieldInsn -> {
-                        var s = ai.owner;
-                        
+                        var s = ai.owner
+    
                         if (ai.opcode == Opcodes.GETFIELD && (toRemove?.contains(ai.owner.toString()) == true)) {
-                            s = className;
+                            s = className
                         }
                         
                         super.visitFieldInsn(ai.opcode, s, ai.name, ai.descriptor)
@@ -44,6 +44,6 @@ class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, val insnList: 
             }
         }
         
-        super.visitCode();
+        super.visitCode()
     }
 }

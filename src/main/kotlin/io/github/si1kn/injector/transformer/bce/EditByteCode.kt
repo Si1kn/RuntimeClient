@@ -1,6 +1,7 @@
 package io.github.si1kn.injector.transformer.bce
 
 
+import io.github.si1kn.injector.transformer.bce.toClass.CustomClassVisitor
 import org.apache.commons.io.FileUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter

@@ -16,11 +16,11 @@ class BasicTransformer : ClassFileTransformer {
     
     private val transformingClassNodes: HashMap<String, ClassReader> = HashMap()
     
-    private val ebc: EditByteCode;
+    private val ebc: EditByteCode
     
     init {
-        val inputJar = JarFile(File("C:\\Users\\si1kn\\IdeaProjects\\test\\target\\test-1.0-SNAPSHOT.jar"));
-        
+        val inputJar = JarFile(File("C:\\Users\\si1kn\\IdeaProjects\\test\\target\\test-1.0-SNAPSHOT.jar"))
+    
         val nameJarFileInputStream: HashMap<String, InputStream> = HashMap()
         
         for (entry in inputJar.entries()) nameJarFileInputStream[entry.name] = inputJar.getInputStream(entry)
@@ -33,8 +33,8 @@ class BasicTransformer : ClassFileTransformer {
         
         val gson = Gson()
         
-        val tranformerMap = gson.fromJson(json, TmJson::class.java).transformerMap;
-        
+        val tranformerMap = gson.fromJson(json, TmJson::class.java).transformerMap
+    
         for (mutableEntry in nameJarFileInputStream) if (mutableEntry.key.endsWith(".class")) for (s in tranformerMap) if (mutableEntry.key.replace(".class", "").replace("/", ".") == s) if (transformingClassNodes[mutableEntry.key.replace(".class", "")] == null) transformingClassNodes[mutableEntry.key.replace(".class", "")] = ClassReader(mutableEntry.value)
         
         ebc = EditByteCode(transformingClassNodes)
@@ -45,4 +45,4 @@ class BasicTransformer : ClassFileTransformer {
     }
 }
 
-class TmJson(var transformerMap: Array<String>);
+class TmJson(var transformerMap: Array<String>)
