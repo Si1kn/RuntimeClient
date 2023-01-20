@@ -1,5 +1,9 @@
 @file:JvmName("AgentMain")
 
+/**
+ *  @author Si1kn: https://github.com/si1kn
+ *  Created at: 17/01/2023
+ */
 package io.github.si1kn.injector
 
 import io.github.si1kn.injector.transformer.BasicTransformer

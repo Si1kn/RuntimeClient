@@ -8,6 +8,10 @@ import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
 import java.io.File
 
+/**
+ *  @author Si1kn: https://github.com/si1kn
+ *  Created at: 17/01/2023
+ */
 class EditByteCode(private var transformingClassNodes: HashMap<String, ClassReader>) {
     
     fun transform(className: String, classBytes: ByteArray): ByteArray {

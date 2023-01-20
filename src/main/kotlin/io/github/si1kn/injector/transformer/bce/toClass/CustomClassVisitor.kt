@@ -1,10 +1,15 @@
 package io.github.si1kn.injector.transformer.bce.toClass
 
 
+import io.github.si1kn.injector.annotations.OverrideType
 import io.github.si1kn.injector.transformer.bce.fromClass.visitors.clazz.TCNClassVisitor
 import io.github.si1kn.injector.util.AbstractInsn
 import org.objectweb.asm.*
 
+/**
+ *  @author Si1kn: https://github.com/si1kn
+ *  Created at: 18/01/2023
+ */
 class CustomClassVisitor(api: Int, classVisitor: ClassVisitor?, val className: String, private val transformingClassNodes: HashMap<String, ClassReader>) :
     ClassVisitor(api, classVisitor) {
     
@@ -14,6 +19,7 @@ class CustomClassVisitor(api: Int, classVisitor: ClassVisitor?, val className: S
         
         val toRemove = ArrayList<String>()
         
+        var overrideType = OverrideType.TOP;
         
         for (transformingClassNode in transformingClassNodes) {
             val nameClass = transformingClassNode.key
@@ -27,6 +33,7 @@ class CustomClassVisitor(api: Int, classVisitor: ClassVisitor?, val className: S
             
             
             val clazzData = tcnClassVisitor.clazzInfo
+            
             
             if (clazzData != null) {
                 
@@ -45,12 +52,17 @@ class CustomClassVisitor(api: Int, classVisitor: ClassVisitor?, val className: S
                             val otherClassDescriptor = annotation.mapping["descriptor"].toString()
                             
                             
+                            
                             if (classThatIsRefencering == className) {
                                 if (name.toString().contains(stringMethod) && descriptor.toString().contains(otherClassDescriptor)) {
                                     toRemove.add(clazzData.clazzName)
                                     val tempinsnList = method.methodInstrustions
-                                    for (abstractInsn in tempinsnList) if (abstractInsn.opcode == Opcodes.RETURN) tempinsnList.remove(abstractInsn)
+                                    
+                                    
+                                    for (abstractInsn in tempinsnList) if (abstractInsn.opcode == Opcodes.RETURN && (OverrideType.valueOf(at)) != OverrideType.OVERRIDE) tempinsnList.remove(abstractInsn)
                                     insnList = tempinsnList;
+                                    
+                                    overrideType = OverrideType.valueOf(at);
                                 }
                             }
                         } else {
@@ -64,6 +76,6 @@ class CustomClassVisitor(api: Int, classVisitor: ClassVisitor?, val className: S
             writer.toByteArray()
         }
         
-        return CustomMethodVisitor(Opcodes.ASM9, cv.visitMethod(access, name, descriptor, signature, exceptions), insnList, toRemove, className)
+        return CustomMethodVisitor(Opcodes.ASM9, cv.visitMethod(access, name, descriptor, signature, exceptions), insnList, toRemove, className, overrideType)
     }
 }

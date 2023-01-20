@@ -12,6 +12,10 @@ import java.nio.charset.StandardCharsets
 import java.security.ProtectionDomain
 import java.util.jar.JarFile
 
+/**
+ *  @author Si1kn: https://github.com/si1kn
+ *  Created at: 17/01/2023
+ */
 class BasicTransformer : ClassFileTransformer {
     
     private val transformingClassNodes: HashMap<String, ClassReader> = HashMap()

@@ -1,16 +1,35 @@
 package io.github.si1kn.injector.transformer.bce.toClass
 
 
+import io.github.si1kn.injector.annotations.OverrideType
 import io.github.si1kn.injector.util.*
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
-class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, private val insnList: ArrayList<AbstractInsn>, private val toRemove: ArrayList<String>?, private val className: String, ) :
+/**
+ *  @author Si1kn: https://github.com/si1kn
+ *  Created at: 18/01/2023
+ */
+class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, private val insnList: ArrayList<AbstractInsn>, private val toRemove: ArrayList<String>?, private val className: String, val locationToInsert: OverrideType) :
     MethodVisitor(api, methodVisitor) {
     
     
+    override fun visitInsn(opcode: Int) {
+        if (opcode == Opcodes.RETURN && locationToInsert == OverrideType.BOTTOM) {
+            insertCode()
+        }
+        super.visitInsn(opcode)
+    }
+    
+    
     override fun visitCode() {
-        
+        if (locationToInsert == OverrideType.TOP || locationToInsert == OverrideType.OVERRIDE) {
+            insertCode()
+        }
+        super.visitCode()
+    }
+    
+    private fun insertCode() {
         if (insnList.isNotEmpty()) {
             for (ai in insnList) {
                 when (ai) {
@@ -20,7 +39,7 @@ class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, private val in
                     is TypeInsn -> super.visitTypeInsn(ai.opcode, ai.type)
                     is FieldInsn -> {
                         var s = ai.owner
-    
+                        
                         if (ai.opcode == Opcodes.GETFIELD && (toRemove?.contains(ai.owner.toString()) == true)) {
                             s = className
                         }
@@ -39,11 +58,9 @@ class CustomMethodVisitor(api: Int, methodVisitor: MethodVisitor, private val in
                     is MultiANewArrayInsn -> super.visitMultiANewArrayInsn(ai.descriptor, ai.numDimensions)
                     is InsnAnnotation -> super.visitInsnAnnotation(ai.typeRef, ai.typePath, ai.descriptor, ai.visible)
                 }
-                
-                
             }
         }
-        
-        super.visitCode()
     }
+    
+    
 }
