@@ -13,7 +13,13 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("commons-io:commons-io:2.11.0")
+    implementation("org.ow2.asm:asm:9.4")
+
+
+
+
 }
 
 tasks.test {
@@ -24,6 +30,14 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-application {
-    mainClass.set("MainKt")
+tasks.withType(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes["Manifest-Version"] = "1.0"
+        attributes["Premain-Class"] = "io.github.si1kn.injector.AgentMain"
+        attributes["Can-Redefine-Classes"] = "true"
+    }
+
+    from(configurations.runtimeClasspath.get().map {if (it.isDirectory) it else zipTree(it)})
 }
