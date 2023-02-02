@@ -38,3 +38,16 @@ tasks.withType(Jar::class) {
 
     from(configurations.runtimeClasspath.get().map {if (it.isDirectory) it else zipTree(it)})
 }
+
+
+configure<PublishingExtension> {
+    
+    publications.create<MavenPublication>("pl") {
+        groupId = "io.github.si1kn"
+        artifactId = "MyPlugin"
+        version = "1.0.0"
+        pom.packaging = "jar" // artifact("$buildDir/libs/MyPlugin.jar")
+        
+    }
+}
+
